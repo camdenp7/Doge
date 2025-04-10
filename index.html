@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bouncing Ball in Circle</title>
+  <style>
+    canvas {
+      background-color: #1e1e1e;
+      display: block;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const circleRadius = 250;
+    const ball = {
+      x: centerX,
+      y: centerY,
+      vx: Math.random() * 4 - 2,
+      vy: Math.random() * 4 - 2,
+      radius: 10,
+      color: 'salmon'
+    };
+
+    function update() {
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+      const dx = ball.x - centerX;
+      const dy = ball.y - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance + ball.radius >= circleRadius) {
+        const nx = dx / distance;
+        const ny = dy / distance;
+        const dot = ball.vx * nx + ball.vy * ny;
+        ball.vx -= 2 * dot * nx;
+        ball.vy -= 2 * dot * ny;
+        const overlap = distance + ball.radius - circleRadius;
+        ball.x -= nx * overlap;
+        ball.y -= ny * overlap;
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, circleRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = '#80aaff';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = ball.color;
+      ctx.fill();
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>
