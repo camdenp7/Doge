@@ -63,7 +63,7 @@
         ball.collisionCount++;
 
         // Every third collision, spawn a new ball if there are fewer than 20
-        if (ball.collisionCount % 3 === 0 && balls.length < 20) {
+        if (ball.collisionCount % 3 === 0 && balls.length < 200000000) {
           balls.push(new Ball(centerX, centerY, 10, 'salmon'));
         }
       }
